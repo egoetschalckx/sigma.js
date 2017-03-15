@@ -70,6 +70,7 @@ module.exports = function(grunt) {
 
   var plugins = [
     'exporters.svg',
+    'layout.buchheim',
     'layout.forceAtlas2',
     'layout.noverlap',
     'neo4j.cypher',

@@ -1,0 +1,247 @@
+<!-- START SIGMA IMPORTS -->
+<script src="../src/sigma.core.js"></script>
+<script src="../src/conrad.js"></script>
+<script src="../src/utils/sigma.utils.js"></script>
+<script src="../src/utils/sigma.polyfills.js"></script>
+<script src="../src/sigma.settings.js"></script>
+<script src="../src/classes/sigma.classes.dispatcher.js"></script>
+<script src="../src/classes/sigma.classes.configurable.js"></script>
+<script src="../src/classes/sigma.classes.graph.js"></script>
+<script src="../src/classes/sigma.classes.camera.js"></script>
+<script src="../src/classes/sigma.classes.quad.js"></script>
+<script src="../src/classes/sigma.classes.edgequad.js"></script>
+<script src="../src/captors/sigma.captors.mouse.js"></script>
+<script src="../src/captors/sigma.captors.touch.js"></script>
+<script src="../src/renderers/sigma.renderers.canvas.js"></script>
+<script src="../src/renderers/sigma.renderers.webgl.js"></script>
+<script src="../src/renderers/sigma.renderers.svg.js"></script>
+<script src="../src/renderers/sigma.renderers.def.js"></script>
+<script src="../src/renderers/webgl/sigma.webgl.nodes.def.js"></script>
+<script src="../src/renderers/webgl/sigma.webgl.nodes.fast.js"></script>
+<script src="../src/renderers/webgl/sigma.webgl.edges.def.js"></script>
+<script src="../src/renderers/webgl/sigma.webgl.edges.fast.js"></script>
+<script src="../src/renderers/webgl/sigma.webgl.edges.arrow.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.labels.def.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.hovers.def.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.nodes.def.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edges.def.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edges.curve.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edges.arrow.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edges.curvedArrow.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edgehovers.def.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edgehovers.curve.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edgehovers.arrow.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edgehovers.curvedArrow.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.extremities.def.js"></script>
+<script src="../src/renderers/svg/sigma.svg.utils.js"></script>
+<script src="../src/renderers/svg/sigma.svg.nodes.def.js"></script>
+<script src="../src/renderers/svg/sigma.svg.edges.def.js"></script>
+<script src="../src/renderers/svg/sigma.svg.edges.curve.js"></script>
+<script src="../src/renderers/svg/sigma.svg.labels.def.js"></script>
+<script src="../src/renderers/svg/sigma.svg.hovers.def.js"></script>
+<script src="../src/middlewares/sigma.middlewares.rescale.js"></script>
+<script src="../src/middlewares/sigma.middlewares.copy.js"></script>
+<script src="../src/misc/sigma.misc.animation.js"></script>
+<script src="../src/misc/sigma.misc.bindEvents.js"></script>
+<script src="../src/misc/sigma.misc.bindDOMEvents.js"></script>
+<script src="../src/misc/sigma.misc.drawHovers.js"></script>
+<!-- END SIGMA IMPORTS -->
+<div id="container">
+    <style>
+        #graph-container {
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            position: absolute;
+        }
+    </style>
+    <div id="graph-container"></div>
+</div>
+<script src="../plugins/sigma.plugins.animate/sigma.plugins.animate.js"></script>
+<script src="../plugins/sigma.layout.buchheim/sigma.layout.buchheim.js"></script>
+<script>
+/**
+ * Just a simple example to show how to use the sigma.layout.buchheim
+ * plugin:
+ *
+ * A random graph is generated. Buchheim is then run.
+ */
+    var i,
+        s,
+        o,
+        N = 20,
+        E = 10,
+        C = 5,
+        d = 0.5,
+        cs = [],
+        graph = {
+            nodes: [],
+            edges: []
+        };
+
+    // Generate the graph
+    graph.nodes.push({
+        id: 'n1',
+        label: 'Node 1',
+        x: Math.random(),
+        y: Math.random(),
+        size: Math.random(),
+        color: '#' + (Math.floor(Math.random() * 16777215).toString(16) + '000000').substr(0, 6)
+    });
+
+    graph.nodes.push({
+        id: 'n1.2',
+        label: 'Node 1.2',
+        x: Math.random(),
+        y: Math.random(),
+        size: Math.random(),
+        color: '#' + (Math.floor(Math.random() * 16777215).toString(16) + '000000').substr(0, 6)
+    });
+
+    graph.nodes.push({
+        id: 'n1.3',
+        label: 'Node 1.3',
+        x: Math.random(),
+        y: Math.random(),
+        size: Math.random(),
+        color: '#' + (Math.floor(Math.random() * 16777215).toString(16) + '000000').substr(0, 6)
+    });
+
+    /*graph.nodes.push({
+        id: 'n1.4',
+        label: 'Node 1.4',
+        x: Math.random(),
+        y: Math.random(),
+        size: Math.random(),
+        color: '#' + (Math.floor(Math.random() * 16777215).toString(16) + '000000').substr(0, 6)
+    });
+
+    graph.nodes.push({
+        id: 'n1.5',
+        label: 'Node 1.5',
+        x: Math.random(),
+        y: Math.random(),
+        size: Math.random(),
+        color: '#' + (Math.floor(Math.random() * 16777215).toString(16) + '000000').substr(0, 6)
+    });
+
+    graph.nodes.push({
+        id: 'n1.2.1',
+        label: 'Node 1.2.1',
+        x: Math.random(),
+        y: Math.random(),
+        size: Math.random(),
+        color: '#' + (Math.floor(Math.random() * 16777215).toString(16) + '000000').substr(0, 6)
+    });
+
+    graph.nodes.push({
+        id: 'n1.2.2',
+        label: 'Node 1.2.2',
+        x: Math.random(),
+        y: Math.random(),
+        size: Math.random(),
+        color: '#' + (Math.floor(Math.random() * 16777215).toString(16) + '000000').substr(0, 6)
+    });
+
+    graph.nodes.push({
+        id: 'n1.3.1',
+        label: 'Node 1.3.1',
+        x: Math.random(),
+        y: Math.random(),
+        size: Math.random(),
+        color: '#' + (Math.floor(Math.random() * 16777215).toString(16) + '000000').substr(0, 6)
+    });
+
+    graph.nodes.push({
+        id: 'n1.4.1',
+        label: 'Node 1.4.1',
+        x: Math.random(),
+        y: Math.random(),
+        size: Math.random(),
+        color: '#' + (Math.floor(Math.random() * 16777215).toString(16) + '000000').substr(0, 6)
+    });*/
+
+    graph.edges.push({
+        id: 'e1',
+        source: 'n1',
+        target: 'n1.2'
+    });
+
+    graph.edges.push({
+        id: 'e2',
+        source: 'n1',
+        target: 'n1.3'
+    });
+
+    /*graph.edges.push({
+        id: 'e3',
+        source: 'n1',
+        target: 'n1.4'
+    });
+
+    graph.edges.push({
+        id: 'e4',
+        source: 'n1.2',
+        target: 'n1.2.1'
+    });
+
+    graph.edges.push({
+        id: 'e5',
+        source: 'n1.3',
+        target: 'n1.3.1'
+    });
+
+    graph.edges.push({
+        id: 'e6',
+        source: 'n1.4',
+        target: 'n1.4.1'
+    });
+
+    graph.edges.push({
+        id: 'e7',
+        source: 'n1.2',
+        target: 'n1.2.2'
+    });
+
+    graph.edges.push({
+        id: 'e8',
+        source: 'n1',
+        target: 'n1.5'
+    });*/
+
+    s = new sigma({
+        graph,
+        container: 'graph-container',
+        settings: {
+            minNodeSize: 4,
+            maxNodeSize: 2,
+            minEdgeSize: 1,
+            maxEdgeSize: 1
+        }
+    });
+
+    // Configure the Buchheim layout:
+    var buchheimListener = s.configBuchheim({
+        nodeMargin: 0.1,
+        scaleNodes: 1.05,
+        gridSize: 75,
+        easing: 'quadraticInOut', // animation transition function
+        duration: 10000   // animation duration. Long here for the purposes of this example only
+    });
+
+    // Bind the events:
+    buchheimListener.bind('start stop interpolate', function (event) {
+        console.log(event.type);
+        if (event.type === 'start') {
+            console.time('buchheim');
+        }
+        if (event.type === 'interpolate') {
+            console.timeEnd('buchheim');
+        }
+    });
+
+    // Start the layout:
+    s.startBuchheim();
+
+</script>
