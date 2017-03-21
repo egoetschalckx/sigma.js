@@ -22,9 +22,6 @@
   var _eventEmitter = {}
 
   var settings = {
-    scaleNodes: 1.2,
-    nodeMargin: 5.0,
-    gridSize: 20,
     rendererIndex: 0
   }
 
@@ -267,10 +264,6 @@
     return v.thread
   }
 
-  function distance(depth, siblings) {
-    return (siblings ? 1 : (group + 1)) / ((orient == "radial") ? depth : 1);
-  }
-
   /**
    * moveSubtree(w-, w+, shift)
    * Let subtrees be the number of children of the current root between w and w+ plus 1
@@ -359,7 +352,7 @@
     var distance = 1
     console.log("apportion " + v.id + ", " + defaultAncestor.id)
 
-    var w = leftSibling(v);
+    var w = leftSibling(v)
 
     if (w !== null) {
       var viPlus = v
@@ -464,7 +457,12 @@
 
     if (isLeaf(v)) {
       //console.log("leaf " + v.id)
-      v.prelim = 0
+      var prevSibling = leftSibling(v);
+      if (prevSibling !== null) {
+        v.prelim = prevSibling.prelim + 1;
+      } else {
+        v.prelim = 0
+      }
     } else {
       var defaultAncestor = leftmostChild(v)
 
@@ -525,12 +523,6 @@
    * Here is the exhaustive list of every accepted parameter in the settings
    * object:
    *
-   *   {?number}            speed               A larger value increases the convergence speed at the cost of precision
-   *   {?number}            scaleNodes          The ratio to scale nodes by - a larger ratio will lead to more space around larger nodes
-   *   {?number}            nodeMargin          A fixed margin to apply around nodes regardless of size
-   *   {?number}            maxIterations       The maximum number of iterations to perform before the layout completes.
-   *   {?integer}           gridSize            The number of rows and columns to use when partioning nodes into a grid for efficient computation
-   *   {?number}            permittedExpansion  A permitted expansion factor to the overall size of the network applied at each iteration
    *   {?integer}           rendererIndex       The index of the renderer to use for node co-ordinates. Defaults to zero.
    *   {?(function|string)} easing              Either the name of an easing in the sigma.utils.easings package or a function. If not specified, the
    *                                            quadraticInOut easing from this package will be used instead.
@@ -581,12 +573,6 @@
    * Here is the exhaustive list of every accepted parameter in the settings
    * object
    *
-   *   {?number}            speed               A larger value increases the convergence speed at the cost of precision
-   *   {?number}            scaleNodes          The ratio to scale nodes by - a larger ratio will lead to more space around larger nodes
-   *   {?number}            nodeMargin          A fixed margin to apply around nodes regardless of size
-   *   {?number}            maxIterations       The maximum number of iterations to perform before the layout completes.
-   *   {?integer}           gridSize            The number of rows and columns to use when partioning nodes into a grid for efficient computation
-   *   {?number}            permittedExpansion  A permitted expansion factor to the overall size of the network applied at each iteration
    *   {?integer}           rendererIndex       The index of the renderer to use for node co-ordinates. Defaults to zero.
    *   {?(function|string)} easing              Either the name of an easing in the sigma.utils.easings package or a function. If not specified, the
    *                                            quadraticInOut easing from this package will be used instead.
